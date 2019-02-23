@@ -1,4 +1,4 @@
-package com.rpatil.cybersociety.shutterup;
+package com.rpatil.cybersociety.shutterup.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.rpatil.cybersociety.shutterup.R;
 
 public class FragmentCategory extends Fragment {
     private static final String TAG = "FragmentCategory";

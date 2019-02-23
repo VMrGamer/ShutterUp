@@ -1,4 +1,4 @@
-package com.rpatil.cybersociety.shutterup;
+package com.rpatil.cybersociety.shutterup.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,29 +7,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class FragmentProfile extends Fragment {
-    private static final String TAG = "FragmentProfile";
+import com.rpatil.cybersociety.shutterup.R;
+
+public class FragmentFeed extends Fragment {
+    private static final String TAG = "FragmentFeed";
 
     private String title;
     private int page;
 
-    public FragmentProfile() {
+    public FragmentFeed() {
         // Required empty public constructor
     }
 
-    public static FragmentProfile newInstance(int page, String title) {
-        FragmentProfile fragmentProfile = new FragmentProfile();
+    public static FragmentFeed newInstance(int page, String title) {
+        FragmentFeed fragmentFeed = new FragmentFeed();
         Bundle args = new Bundle();
         args.putInt("page", page);
         args.putString("title", title);
-        fragmentProfile.setArguments(args);
-        return fragmentProfile;
+        fragmentFeed.setArguments(args);
+        return fragmentFeed;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_fragment_profile, container, false);
+        return inflater.inflate(R.layout.fragment_fragment_feed, container, false);
     }
 
     @Override
