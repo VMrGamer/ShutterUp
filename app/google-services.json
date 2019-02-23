@@ -1,0 +1,99 @@
+{
+  "project_info": {
+    "project_number": "1097476409302",
+    "firebase_url": "https://cybersocietycompanion.firebaseio.com",
+    "project_id": "cybersocietycompanion",
+    "storage_bucket": "cybersocietycompanion.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1097476409302:android:aa94a44ca8357a4e",
+        "android_client_info": {
+          "package_name": "com.rpatil.cybersociety.shutterup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1097476409302-lfq0iqbpepafifrqna9r2ck6j7h596hg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rpatil.cybersociety.shutterup",
+            "certificate_hash": "c3b3996cb761987803d98b6ad007bf52084ca5f9"
+          }
+        },
+        {
+          "client_id": "1097476409302-a4jk2s0n2vtpqp6hgf3t5sv5b6e477pu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDh7qGEk5TL5GwYcTXxjfNHj9mPDepTg9I"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1097476409302-a4jk2s0n2vtpqp6hgf3t5sv5b6e477pu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1097476409302:android:24b5a26823580d79",
+        "android_client_info": {
+          "package_name": "vmrgamer.cybersocietycompanion"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1097476409302-gt7mcvd152ruirv2qp7j66oj5jmdl5db.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "vmrgamer.cybersocietycompanion",
+            "certificate_hash": "c3b3996cb761987803d98b6ad007bf52084ca5f9"
+          }
+        },
+        {
+          "client_id": "1097476409302-a4jk2s0n2vtpqp6hgf3t5sv5b6e477pu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDh7qGEk5TL5GwYcTXxjfNHj9mPDepTg9I"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1097476409302-a4jk2s0n2vtpqp6hgf3t5sv5b6e477pu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
