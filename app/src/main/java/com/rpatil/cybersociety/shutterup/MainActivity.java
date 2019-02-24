@@ -7,6 +7,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.rpatil.cybersociety.shutterup.fragments.FragmentCategory;
@@ -49,10 +50,11 @@ public class MainActivity extends AppCompatActivity implements FragmentFeed.OnFr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Log.d(TAG, "onCreate: YO");
+
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_feed);
-        //navigation.setItemBackgroundResource(R.drawable.bottom_navigation_selector);
     }
 
     @Override
