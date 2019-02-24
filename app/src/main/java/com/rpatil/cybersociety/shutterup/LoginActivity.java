@@ -34,7 +34,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -183,6 +182,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
 
                             } else {
+                                showProgress(false);
                                 Log.w(TAG, "signInWithEmail:failure", task.getException());
                                 Toast.makeText(LoginActivity.this, "Authentication failed." + task.getException().getMessage(),
                                         Toast.LENGTH_SHORT).show();

@@ -1,5 +1,6 @@
 package com.rpatil.cybersociety.shutterup;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -9,10 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.rpatil.cybersociety.shutterup.fragments.FragmentCategory;
-import com.rpatil.cybersociety.shutterup.fragments.FragmentFeed;
 import com.rpatil.cybersociety.shutterup.fragments.FragmentProfile;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FragmentFeed.OnFragmentInteractionListener{
     private static final String TAG = "MainActivity";
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
             switch (item.getItemId()) {
                 case R.id.navigation_feed:
-                    fragment = FragmentFeed.newInstance(3,"Feed");
+                    fragment = FragmentFeed.newInstance("3","Feed");
                     break;
                 case R.id.navigation_category:
                     fragment = FragmentCategory.newInstance(3,"Category");
@@ -52,6 +52,11 @@ public class MainActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_feed);
         //navigation.setItemBackgroundResource(R.drawable.bottom_navigation_selector);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 
 }

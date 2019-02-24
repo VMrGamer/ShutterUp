@@ -29,4 +29,7 @@
 
     <!-- TODO: Remove, change or add another notification channel-->
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="title_activity_main2">Daily Feed</string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>
