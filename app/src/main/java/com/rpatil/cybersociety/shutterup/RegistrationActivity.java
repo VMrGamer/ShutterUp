@@ -1,7 +1,10 @@
 package com.rpatil.cybersociety.shutterup;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.icu.util.Calendar;
+import android.icu.util.GregorianCalendar;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,11 +27,24 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -35,11 +52,18 @@ import static android.Manifest.permission.READ_CONTACTS;
  * A Registration Screen that registers users via email/password method on Firebase Authentication.
  */
 public class RegistrationActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+    private static final String TAG = "RegistrationActivity";
     private static final int REQUEST_READ_CONTACTS = 0;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
+    private EditText mFirstNameView;
+    private EditText mLastNameView;
+    private EditText mMobileNumberView;
+    private EditText mDateOfBirthView;
     private EditText mPasswordView;
+    private EditText mReEnterPasswordView;
+    private CalendarView mCalendarView;
     private View mProgressView;
     private View mLoginFormView;
 
@@ -47,32 +71,49 @@ public class RegistrationActivity extends AppCompatActivity implements LoaderCal
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+        AppHelper.init(getApplicationContext());
         // Set up the login form.
+        mFirstNameView = findViewById(R.id.f_name);
+        mLastNameView = findViewById(R.id.l_name);
+        mMobileNumberView = findViewById(R.id.mobile_no);
+        mDateOfBirthView = findViewById(R.id.date_of_birth);
         mEmailView = findViewById(R.id.email);
         populateAutoComplete();
-
         mPasswordView = findViewById(R.id.password);
+        mReEnterPasswordView = findViewById(R.id.retype_password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_NULL) {
+                    if(!mPasswordView.getText().toString().equals(mReEnterPasswordView.getText().toString()))
+                        mReEnterPasswordView.setError("Both Passwords must be equal");
+                return true;
+            }
                 return false;
             }
         });
 
-        Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+        mCalendarView = findViewById(R.id.calendarView_dob);
+        mCalendarView.setMaxDate(new Date().getTime());
+        mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                Calendar calendar = new GregorianCalendar();
+                calendar.set(year, month, dayOfMonth);
+                mDateOfBirthView.setText(calendar.getTime().toString());
+            }
+        });
+
+        Button mEmailRegisterButton = findViewById(R.id.email_register_button);
+        mEmailRegisterButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
             }
         });
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+        mLoginFormView = findViewById(R.id.register_form);
+        mProgressView = findViewById(R.id.register_progress);
     }
 
     private void populateAutoComplete() {
@@ -129,7 +170,12 @@ public class RegistrationActivity extends AppCompatActivity implements LoaderCal
 
         // Reset errors.
         mEmailView.setError(null);
+        mFirstNameView.setError(null);
+        mLastNameView.setError(null);
+        mMobileNumberView.setError(null);
+        mDateOfBirthView.setError(null);
         mPasswordView.setError(null);
+        mReEnterPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
         String email = mEmailView.getText().toString();
@@ -139,7 +185,8 @@ public class RegistrationActivity extends AppCompatActivity implements LoaderCal
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)
+                && !mPasswordView.getText().toString().equals(mReEnterPasswordView.getText().toString())) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
@@ -157,15 +204,50 @@ public class RegistrationActivity extends AppCompatActivity implements LoaderCal
         }
 
         if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
             showProgress(true);
-            //TODO: Implement Registration Here
-            showProgress(false);
+            AppHelper.getFirebaseAuth().createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                Log.d(TAG, "createUserWithEmail:success");
+                                AppHelper.init(getApplicationContext());
+                                FirebaseUser user = AppHelper.getFirebaseCurrentUser();
+                                Map<String, Object> doc_user = new HashMap<>();
+                                doc_user.put("email", user.getEmail());
+                                doc_user.put("dob", mDateOfBirthView.getText().toString());
+                                doc_user.put("mobile_no", mMobileNumberView.getText().toString());
+                                doc_user.put("name", Arrays.asList(mFirstNameView.getText().toString(),mLastNameView.getText().toString()));
+                                doc_user.put("uid", user.getUid());
+                                AppHelper.getFirestore().collection("users")
+                                        .document(user.getUid())
+                                        .set(doc_user)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d(TAG, "DocumentSnapshot successfully written!");
+                                                startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.w(TAG, "Error writing document", e);
+                                            }
+                                        });
+                                showProgress(false);
+                                startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
+
+                            } else {
+                                showProgress(false);
+                                Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                                Toast.makeText(RegistrationActivity.this, "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
         }
     }
 
