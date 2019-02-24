@@ -1,4 +1,4 @@
-package com.rpatil.cybersociety.shutterup;
+package com.rpatil.cybersociety.shutterup.fragments.feed;
 
 import java.util.ArrayList;
 

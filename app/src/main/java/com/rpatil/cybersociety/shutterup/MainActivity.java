@@ -11,6 +11,7 @@ import android.view.MenuItem;
 
 import com.rpatil.cybersociety.shutterup.fragments.FragmentCategory;
 import com.rpatil.cybersociety.shutterup.fragments.FragmentProfile;
+import com.rpatil.cybersociety.shutterup.fragments.feed.FragmentFeed;
 
 public class MainActivity extends AppCompatActivity implements FragmentFeed.OnFragmentInteractionListener{
     private static final String TAG = "MainActivity";

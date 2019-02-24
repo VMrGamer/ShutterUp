@@ -1,4 +1,4 @@
-package com.rpatil.cybersociety.shutterup;
+package com.rpatil.cybersociety.shutterup.fragments.feed;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import android.support.v7.widget.LinearLayoutManager;
+import com.rpatil.cybersociety.shutterup.R;
 
 
 /**

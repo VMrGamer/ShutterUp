@@ -1,4 +1,4 @@
-package com.rpatil.cybersociety.shutterup;
+package com.rpatil.cybersociety.shutterup.fragments.feed;
 
 import android.content.Context;
 import android.net.Uri;
@@ -9,8 +9,6 @@ import android.support.v7.widget.LinearLayoutManager;
 
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -33,6 +31,8 @@ import android.text.Spanned;
 
 import android.view.ViewGroup;
 import android.view.MenuInflater;
+
+import com.rpatil.cybersociety.shutterup.R;
 
 /**
  * A simple {@link Fragment} subclass.
