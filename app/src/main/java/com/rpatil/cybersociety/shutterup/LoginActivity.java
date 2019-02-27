@@ -59,6 +59,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         FirebaseApp.initializeApp(this);
         AppHelper.init(getApplicationContext());
         // Set up the login form.
+
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        finish();
         mEmailView = findViewById(R.id.email);
         populateAutoComplete();
 
